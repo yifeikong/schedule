@@ -102,6 +102,20 @@ class Scheduler:
         for job in sorted(runnable_jobs):
             self._run_job(job)
 
+    def run_forever(self):
+        """
+        Run all jobs that are scheduled to run. It's just a loop around run_pending, blocks
+        """
+        while True:
+            try:
+                self.run_pending()
+                time.sleep(0.2)
+            except KeyboardInterrupt:
+                break
+
+    def run_forever_backgroud(self):
+        pass
+
     def run_all(self, delay_seconds=0):
         """
         Run all jobs regardless if they are scheduled to run or not.
@@ -551,9 +565,11 @@ class Job:
         """
         Like `do`, but run in a seperate thread
         """
+
         def wrapper(*args, **kwargs):
             t = threading.Thread(target=job_func, args=args, kwargs=kwargs, daemon=daemon)
             t.start()
+
         self.do(wrapper, *args, **kwargs)
 
     def run_command(self, command, shell=False):
@@ -678,6 +694,13 @@ def run_pending():
     :data:`default scheduler instance <default_scheduler>`.
     """
     default_scheduler.run_pending()
+
+
+def run_forever():
+    """Calls :meth:`run_forever <Scheduler.run_forever>` on the
+    :data:`default scheduler instance <default_scheduler>`.
+    """
+    default_scheduler.run_forever()
 
 
 def run_all(delay_seconds=0):

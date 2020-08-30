@@ -45,9 +45,4 @@ for line in schedule_lines.split("\n"):
     if not args.test:
         schedule.when(expr).run_command(command, shell=True)
 
-while True:
-    try:
-        schedule.run_pending()
-        time.sleep(1)
-    except KeyboardInterrupt:
-        break
+schedule.run_forever()
