@@ -16,16 +16,14 @@ The default configuration file is /etc/schedule, syntax goes like:
 """
 
 import argparse
-import time
 import sys
+import time
 
 import schedule
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-f", "--file", default="/etc/schedule",
-                    help="configuration file to use")
-parser.add_argument("-t", "--test", action="store_true",
-                    help="test configuration and exit")
+parser.add_argument("-f", "--file", default="/etc/schedule", help="configuration file to use")
+parser.add_argument("-t", "--test", action="store_true", help="test configuration and exit")
 args = parser.parse_args()
 
 with open(args.file) as f:
