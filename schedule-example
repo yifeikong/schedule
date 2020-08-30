@@ -1,3 +1,4 @@
+timzone = +0800
 # line starts with # is comment
 every 5 seconds, echo "wubba lubba dub dub"
 # line starts with # is comment

@@ -225,7 +225,10 @@ class Scheduler:
         if not re.match(r"^[+-][01]\d:?(00|30|45)$", timezone_str):
             raise ScheduleValueError("Invalid timezone format")
         timezone_offset = self._parse_timezone(timezone_str)
-        self._timezone = datetime.timezone(datetime.timedelta(minutes=timezone_offset))
+        timezone = datetime.timezone(datetime.timedelta(minutes=timezone_offset))
+        if self.jobs and timezone != self.jobs[0].timezone:
+            raise ScheduleError("Timezone conflicts with existing job, create a new scheduler.")
+        self._timezone = timezone
         return self
 
     def _parse_timezone(self, timezone_str):

@@ -7,6 +7,8 @@ This is a simple command like `cron`.
 
 The default configuration file is /etc/schedule, syntax goes like:
 
+    # set time zone first or just don't set timezone
+    timezone = +0800
     # line starts with # is comment
     every 60 minutes, echo "wubba lubba dub dub"
     # backup database every day at midnight
@@ -35,6 +37,11 @@ for line in schedule_lines.split("\n"):
         continue
     # ignore empty lines
     if not line.strip():
+        continue
+    # check timezone setting
+    if line.startswith("timezone"):
+        _, timezone_str = line.split("=")
+        schedule.timezone(timezone_str.strip())
         continue
     try:
         expr, command = line.split(",", 1)

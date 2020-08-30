@@ -99,6 +99,10 @@ class SchedulerTests(unittest.TestCase):
         with self.assertRaises(ScheduleValueError):
             timezone("+0850")
 
+        timezone("+0800").every().day.do(print)
+        with self.assertRaises(ScheduleError):
+            timezone("+0830")  # change timezone
+
     def test_time_units(self):
         assert every().seconds.unit == "seconds"
         assert every().minutes.unit == "minutes"
