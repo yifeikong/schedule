@@ -44,6 +44,7 @@ import logging
 import random
 import re
 import subprocess
+import threading
 import time
 from collections.abc import Hashable
 
@@ -545,6 +546,15 @@ class Job:
         self._schedule_next_run()
         self.scheduler.jobs.append(self)
         return self
+
+    def do_in_thread(self, job_func, *args, daemon=True, **kwargs):
+        """
+        Like `do`, but run in a seperate thread
+        """
+        def wrapper(*args, **kwargs):
+            t = threading.Thread(target=job_func, args=args, kwargs=kwargs, daemon=daemon)
+            t.start()
+        self.do(wrapper, *args, **kwargs)
 
     def run_command(self, command, shell=False):
         return self.do(subprocess.run, command, shell=shell)
