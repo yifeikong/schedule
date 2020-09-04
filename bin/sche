@@ -3,16 +3,19 @@
 
 
 """
-This is a simple command like `cron`.
+A simple command like `cron`, but more human friendly.
 
-The default configuration file is /etc/schedule, syntax goes like:
+The default configuration file is /etc/schetab, syntax goes like:
 
-    # set time zone first or just don't set timezone
+    # (optional) set time zone first
     timezone = +0800
-    # line starts with # is comment
+
+    # line starts with # is a comment
     every 60 minutes, echo "wubba lubba dub dub"
+
     # backup database every day at midnight
     every day at 00:00, mysqldump -u backup
+
     # redirect logs so you can see them
     every minute, do_some_magic >> /some/output/file 2>&1
 """
@@ -22,13 +25,19 @@ import sys
 
 import sche
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(
+    description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter,
+)
 parser.add_argument("-f", "--file", default="/etc/schetab", help="configuration file to use")
 parser.add_argument("-t", "--test", action="store_true", help="test configuration and exit")
 args = parser.parse_args()
 
-with open(args.file) as f:
-    schedule_lines = f.read()
+try:
+    with open(args.file) as f:
+        schedule_lines = f.read()
+except IOError:
+    print("error reading file %s" % args.file)
+    sys.exit(-1)
 
 for line in schedule_lines.split("\n"):
     # ignore comments

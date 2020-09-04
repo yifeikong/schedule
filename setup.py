@@ -12,7 +12,7 @@ import codecs
 
 from setuptools import setup
 
-SCHE_VERSION = "1.0.0"
+SCHE_VERSION = "1.0a2"
 SCHE_DOWNLOAD_URL = "https://github.com/yifeikong/sche/tarball/" + SCHE_VERSION
 
 
