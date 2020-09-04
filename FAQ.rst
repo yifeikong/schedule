@@ -3,14 +3,14 @@
 Frequently Asked Questions
 ==========================
 
-Frequently asked questions on the usage of ``schedule``.
+Frequently asked questions on the usage of ``sche``.
 
 How to execute jobs in parallel?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 *I am trying to execute 50 items every 10 seconds, but from the my logs it says it executes every item in 10 second schedule serially, is there a work around?*
 
-By default, schedule executes all jobs serially. The reasoning behind this is that it would be difficult to find a model for parallel execution that makes everyone happy.
+By default, ``sche`` executes all jobs serially. The reasoning behind this is that it would be difficult to find a model for parallel execution that makes everyone happy.
 
 Schedule also provides a simple method called `do_in_thread`, it just starts a new thread to run you function on each schedule.
 
@@ -18,23 +18,21 @@ Schedule also provides a simple method called `do_in_thread`, it just starts a n
 
     import threading
     import time
-    import schedule
+    import sche
 
 
     def job():
         print("I'm running on thread %s" % threading.current_thread())
 
 
-    schedule.every(10).seconds.do_in_thread(job)
-    schedule.every(10).seconds.do_in_thread(job)
-    schedule.every(10).seconds.do_in_thread(job)
-    schedule.every(10).seconds.do_in_thread(job)
-    schedule.every(10).seconds.do_in_thread(job)
+    sche.every(10).seconds.do_in_thread(job)
+    sche.every(10).seconds.do_in_thread(job)
+    sche.every(10).seconds.do_in_thread(job)
+    sche.every(10).seconds.do_in_thread(job)
+    sche.every(10).seconds.do_in_thread(job)
 
 
-    while 1:
-        schedule.run_pending()
-        time.sleep(1)
+    sche.run_forever()
 
 If you want tighter control on the number of threads use a shared jobqueue and one or more worker threads:
 
@@ -43,7 +41,7 @@ If you want tighter control on the number of threads use a shared jobqueue and o
     import Queue
     import time
     import threading
-    import schedule
+    import sche
 
 
     def job():
@@ -203,7 +201,7 @@ How to run a job at random intervals?
         # This job will execute every 5 to 10 seconds.
         print('Foo')
 
-    schedule.every(5).to(10).seconds.do(my_job)
+    sche.every(5).to(10).seconds.do(my_job)
 
 How can I pass arguments to the job function?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -215,11 +213,11 @@ How can I pass arguments to the job function?
     def greet(name):
         print('Hello', name)
 
-    schedule.every(2).seconds.do(greet, name='Alice')
-    schedule.every(4).seconds.do(greet, name='Bob')    
+    sche.every(2).seconds.do(greet, name='Alice')
+    sche.every(4).seconds.do(greet, name='Bob')    
 
 How can I make sure long-running jobs are always executed on time?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Schedule does not account for the time it takes the job function to execute. To guarantee a stable execution schedule you need to move long-running jobs off the main-thread (where the scheduler runs). See "How to execute jobs in parallel?" in the FAQ for a sample implementation. 
+Sche does not account for the time it takes the job function to execute. To guarantee a stable execution schedule you need to move long-running jobs off the main-thread (where the scheduler runs). See "How to execute jobs in parallel?" in the FAQ for a sample implementation. 
 
