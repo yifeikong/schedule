@@ -104,6 +104,8 @@ class Scheduler:
         """
         Run all jobs that are scheduled to run. It's just a loop around run_pending, blocks
         """
+        # run job immediately after the scheduler starts, which is the expected behavior for most users
+        self.run_all()
         while True:
             try:
                 self.run_pending()
