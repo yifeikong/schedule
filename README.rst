@@ -61,7 +61,7 @@ Usage
     sche.when("every minute at :17").do(job)
 
     # or use decorator to register job(without arguments)
-    @schedule.when("every 10 minutes")
+    @sche.when("every 10 minutes")
     def another_job():
         print("I'm working on another job...")
 

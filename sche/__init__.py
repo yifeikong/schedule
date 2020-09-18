@@ -100,12 +100,15 @@ class Scheduler:
         for job in sorted(runnable_jobs):
             self._run_job(job)
 
-    def run_forever(self):
+    def run_forever(self, instant=False):
         """
         Run all jobs that are scheduled to run. It's just a loop around run_pending, blocks
+
+        :param instant: Run all jobs instantly
         """
         # run job immediately after the scheduler starts, which is the expected behavior for most users
-        self.run_all()
+        if instant:
+            self.run_all()
         while True:
             try:
                 self.run_pending()
@@ -113,8 +116,9 @@ class Scheduler:
             except KeyboardInterrupt:
                 break
 
-    def run_forever_backgroud(self):
-        pass
+    def run_forever_background(self, instant=False):
+        thread = threading.Thread(target=self.run_forever, args=(instant,), daemon=True)
+        thread.start()
 
     def run_all(self, delay_seconds=0):
         """
