@@ -70,7 +70,10 @@ Usage
     # set job with timezone
     sche.timezone("+0800").every().day.at("00:00").do(job)
 
-    sche.run_forever()
+    sche.run_forever()  # blockingly
+
+    # OR
+    sche.run_forever_background()  # non-blockingly
 
 Documentation
 -------------
