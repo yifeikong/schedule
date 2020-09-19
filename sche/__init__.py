@@ -173,6 +173,7 @@ class Scheduler:
         if to_time:
             job.to(to_time)
         job.unit = unit
+        job.start_day = start_day
         if at_time:
             job.at(at_time)
         return job
@@ -708,6 +709,13 @@ def run_forever():
     :data:`default scheduler instance <default_scheduler>`.
     """
     default_scheduler.run_forever()
+
+
+def run_forever_background():
+    """Calls :meth:`run_forever <Scheduler.run_forever>` on the
+    :data:`default scheduler instance <default_scheduler>`.
+    """
+    default_scheduler.run_forever_background()
 
 
 def run_all(delay_seconds=0):

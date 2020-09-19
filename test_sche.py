@@ -316,6 +316,12 @@ class SchedulerTests(unittest.TestCase):
             and job.unit == "minutes"
             and job.at_time == datetime.time(0, 0, 50)
         )
+        job = when("every wednesday at 13:15")
+        assert (
+            job.start_day == "wednesday"
+            and job.unit == "weeks"
+            and job.at_time == datetime.time(13, 15, 0)
+        )
 
     def test_when_decorator(self):
         s = sche.Scheduler()
